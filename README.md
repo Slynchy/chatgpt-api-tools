@@ -14,6 +14,6 @@ Flags:
 
 
 1. Run `npm install`
-2. Create a new "scriptdef" under `src/scriptdefs` (use `template.ts` for guidance)
-    i. Add paths to files required by your script to `requiredFiles` and they'll be ready to use when generating the prompts
-3. Run the scriptdef with the following command: `ts-node src/index.ts [path to scripdef file]`
+1. Create a new "scriptdef" under `src/scriptdefs` (use `template.ts` for guidance)
+    * Add paths to files required by your script to `requiredFiles` and they'll be ready to use when generating the prompts
+1. Run the scriptdef with the following command: `ts-node src/index.ts [path to scripdef file]`

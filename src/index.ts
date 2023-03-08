@@ -35,11 +35,8 @@ Flags:
         return;
     }
 
-    let delay = parseInt(args[args.indexOf("-l") + 1]);
-    if(!delay || Number.isNaN(delay)) {
-        delay = 1000;
-    }
-    console.log("Using delay of %i millseconds", delay);
+    const delay = parseInt(args[args.indexOf("-l") + 1]) || 1000;
+    console.log(`Using delay of ${delay} milliseconds`);
 
     const pathToFile = path.resolve(args[args.length-1]);
     let output: string = "";
@@ -50,10 +47,9 @@ Flags:
         }
 
         const fileBuffers: Record<string, string> = {};
-        Object.keys(evalResult.requiredFiles)
-            .forEach((e) => {
-                fileBuffers[e] = fs.readFileSync(evalResult.requiredFiles[e], "utf8");
-            });
+        for (const [key, value] of Object.entries(evalResult.requiredFiles)) {
+            fileBuffers[key] = fs.readFileSync(value, "utf8");
+        }
         const inputBatch = await evalResult.generateInputBatch(fileBuffers);
 
         const { ChatGPTAPI, ChatGPTUnofficialProxyAPI } = await import("chatgpt");
@@ -92,11 +88,7 @@ Flags:
             const timeInSecs = Math.floor(estimatedCompleteTimeMs / 1000) % 60;
             const timeInMinStr = timeInMin < 10 ? `0${timeInMin}` : timeInMin.toString();
             const timeInSecsStr = timeInSecs < 10 ? `0${timeInSecs}` : timeInSecs.toString();
-            console.log(
-                "Estimated time remaining: %s:%s",
-                timeInMinStr,
-                timeInSecsStr
-            );
+            console.log(`Estimated time remaining: ${timeInMinStr}:${timeInSecsStr}`);
             await wait(delay);
         }
         const totalEnd = Date.now();
